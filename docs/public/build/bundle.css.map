@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "file": "bundle.css",
+  "sources": [
+    "../../App.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\n  import { onMount } from \"svelte\";\n\n  let characters = [\"🥳\", \"🎉\", \"✨\"];\n\n  let confetti = new Array(100)\n    .fill()\n    .map((_, i) => {\n      return {\n        character: characters[i % characters.length],\n        x: Math.random() * 100,\n        y: -20 - Math.random() * 100,\n        r: 0.1 + Math.random() * 1\n      };\n    })\n    .sort((a, b) => a.r - b.r);\n\n  onMount(() => {\n    let frame;\n\n    function loop() {\n      frame = requestAnimationFrame(loop);\n\n      confetti = confetti.map(emoji => {\n        emoji.y += 0.7 * emoji.r;\n        if (emoji.y > 120) emoji.y = -20;\n        return emoji;\n      });\n    }\n\n    loop();\n\n    return () => cancelAnimationFrame(frame);\n  });\n</script>\n\n<style>\n  :global(body) {\n    overflow: hidden;\n  }\n\n  span {\n    position: absolute;\n    font-size: 5vw;\n  }\n</style>\n\n{#each confetti as c}\n  <span style=\"left: {c.x}%; top: {c.y}%; transform: scale({c.r})\">\n    {c.character}\n  </span>\n{/each}\n"
+  ],
+  "names": [],
+  "mappings": "AAqCU,IAAI,AAAE,CAAC,AACb,QAAQ,CAAE,MAAM,AAClB,CAAC,AAED,IAAI,cAAC,CAAC,AACJ,QAAQ,CAAE,QAAQ,CAClB,SAAS,CAAE,GAAG,AAChB,CAAC"
+}
